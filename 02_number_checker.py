@@ -5,7 +5,7 @@ def num_check(question, error, num_type):
         try:
             response = num_type(input(question))
 
-            if response <= 0:
+            if response < 2:
                 print(error)
             else:
                 return response
@@ -16,7 +16,7 @@ def num_check(question, error, num_type):
 # Main Routine goes here
 
 while 1 == 1:
-    get_cost = num_check("What is your budget? $", "Please enter a number more than 0\n", float)
+    get_cost = num_check("What is your budget? $", "Please enter a number more than or equal to $2.00\n", float)
     print("your budget is ${}".format(get_cost))
     print()
 
