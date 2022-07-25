@@ -126,8 +126,6 @@ for item in range(0, 14):
             print()
             continue
 
-        
-
     print()
     get_weight = num_check("What is the weight of your item? ", "Error please enter valid number", float)
     print()

@@ -1,5 +1,6 @@
 import re
-import pandas
+from urllib import response
+
 
 def yes_no(question):
 
@@ -36,18 +37,25 @@ def num_check(question, error, num_type):
 
 # **** Main Routine goes here ****
 
-# set up dictionaries and lists
+# set up dictionaries
 
-item_list = []
-weight_list = []
-price_list = []
-unit_cost_list = []
+price_comp_dict = {
+    'Dark Elixir': 5.00,
+    'Elixir': 2.50,
+    'Gold': 2.50,
+    'Crowns': 4.00,
+    'Gems': 3.00,
+    'Trophies': 3.50
+}
 
-variable_dict = {
-    "Item": item_list,
-    "Weight": weight_list,
-    "Price": price_list,
-    "Unit Cost": unit_cost_list
+weight_dict = {
+    'Dark Elixir': 200,
+    'Elixir': 180,
+    'Gold': 250,
+    'Crowns': 300,
+    'Gems': 200,
+    'Trophies': 350
+
 }
 
 want_help = yes_no("Do want to read the instructions? ")
@@ -65,6 +73,19 @@ get_budget = num_check("What is your budget? $", "Please enter a number more tha
 # confirm user budget
 print("Your budget is ${}".format(get_budget))
 
+# valid items holds list of all items
+# Each item in valid snacks is a list with'
+# valid options for each item <full name, letter code
+# , and possible abbreviations etc>
+valid_items = [
+    ["dark elixir", "d", "de", "darkelixir"],
+    ["elixir", "e"],
+    ["gold", "gl" ],
+    ["crowns", "crowns", "c",],
+    ["trophies", "trophy", "t"],
+    ["gems", "gem", "gm", "gms"],
+    ["xxx"]
+]
 
 # initialise variables
 item_ok = ""
@@ -83,11 +104,36 @@ for item in range(0, 14):
 
     if desired_item == "xxx":
         break
-   
+
+    for var_list in valid_items:
+
+        # if the item is in one of the lists, return the full name 
+        if desired_item in var_list:
+
+            # Get full name of item and put it 
+            # in title case so it looks nice when outputted
+            item = var_list[0].title()
+            item_ok = "yes"
+            break
+    
+        # if the chosen item is not valid, set item_ok to no
+        else:
+            item_ok = "no"
+        
+    # if the item is not OK - ask question again.'
+    
+    if item_ok == "yes":
+        print()
+        print("Item Choice:", item)
+        print()
+    else:
+        print("Invalid choice")
+        print()
+        continue
+    
     
     unit_type = "invalid"
     while unit_type != "valid":
-        # ask user what measurement unit they want to use
         get_unit = input("What measuremnt unit would you like to use? (kg, g, mL, L): ")
         if get_unit == "g":
             weight_type ="g"
@@ -114,12 +160,10 @@ for item in range(0, 14):
     get_weight = num_check("What is the weight or amount of your item? ", "Error please enter valid number", float)
     print()
 
-    # convert g to kg
     if weight_type == "g":
         conv_weight = get_weight / 1000 
         print("Weight = {}".format(conv_weight), "kg")
     
-    # convert mL to L
     elif weight_type == "mL":
         conv_weight = get_weight / 1000 
         print("Weight = {}".format(conv_weight), "L")
@@ -127,32 +171,8 @@ for item in range(0, 14):
     else:
      print("Weight = {}".format(get_weight), weight_type)
 
-    print()
-    get_cost = num_check("How much does your item cost? $", "Please enter a number more than 0", float)
+    
 
-    # print("{}".format(desired_item))
-    # print("{}".format(get_weight))
-    # print("{}".format(get_cost))
+    
 
-    # calculate unit cost
-    unit_cost = get_cost / conv_weight
-   
-    # round unit cost to 2dp
-    r_unit_cost = (round(unit_cost, 2))
-    print("Unit Cost: ${}".format(r_unit_cost))
-
-# add item, weight, price and unit cost to lists
-item_list.append(desired_item)
-weight_list.append(conv_weight)
-price_list.append(get_cost)
-unit_cost_list.append(r_unit_cost)
-
-variable_frame = p
-
-
-
-
-
-
-
-        
+    
