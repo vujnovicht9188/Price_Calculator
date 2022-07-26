@@ -147,7 +147,12 @@ weight_list.append(conv_weight)
 price_list.append(get_cost)
 unit_cost_list.append(r_unit_cost)
 
-variable_frame = p
+variable_frame = pandas.DataFrame(variable_dict)
+variable_frame = variable_frame.set_index('Item')
+
+print(variable_frame)
+
+
 
 
 
