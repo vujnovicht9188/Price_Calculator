@@ -1,6 +1,18 @@
 import re
 import pandas
 
+def not_blank(question, error):
+
+    valid = False
+    while not valid:
+        response = input(question)
+
+        if response == "":
+            print("{}.  \nPlease try again. \n".format(error))
+            continue
+    
+        return response
+
 def yes_no(question):
 
     to_check = ['yes', 'no']
@@ -26,7 +38,7 @@ def num_check(question, error, num_type):
         try:
             response = num_type(input(question))
 
-            if response <= 0:
+            if response < 1:
                 print(error)
             else:
                 return response
@@ -45,9 +57,9 @@ unit_cost_list = []
 
 variable_dict = {
     "Item": item_list,
-    "Weight": weight_list,
-    "Price": price_list,
-    "Unit Cost": unit_cost_list
+    "Weight (kg/L)": weight_list,
+    "Price ($)": price_list,
+    "Unit Cost ($)": unit_cost_list
 }
 
 want_help = yes_no("Do want to read the instructions? ")
@@ -55,12 +67,21 @@ if want_help == "yes":
     print()
     print("***** Instructions *****")
     print()
-    print("insert instructions here")
-    print()
+    print("This Program is a price comparison tool")
+    print("""Firstly you will enter your shopping budget below, after you have inputted your budget please enter
+    
+    - Your item
+    - Unit of measurement you would like to use
+    - How much the item weighs or the volume
+    - And how much the item costs
+
+    The program will calculate the unit cost for each item and when you are done input "xxx"
+    The program will output a neat table organised from cheapest down to most expensive
+    """)
     
 # ask user for budget
 print()
-get_budget = num_check("What is your budget? $", "Please enter a number more than 0\n", float)
+get_budget = num_check("What is your budget? $", "This budget is too low or invalid\n", float)
 
 # confirm user budget
 print("Your budget is ${}".format(get_budget))
@@ -79,7 +100,7 @@ for item in range(0, 14):
     # ask user for desired item and put it in lowercase
         print()    
     print()
-    desired_item = input("Item: ").lower()
+    desired_item = not_blank("Item: ", "This cannot be blank").lower()
 
     if desired_item == "xxx":
         break
@@ -142,15 +163,23 @@ for item in range(0, 14):
     print("Unit Cost: ${}".format(r_unit_cost))
 
 # add item, weight, price and unit cost to lists
-item_list.append(desired_item)
-weight_list.append(conv_weight)
-price_list.append(get_cost)
-unit_cost_list.append(r_unit_cost)
+    item_list.append(desired_item)
+    weight_list.append(conv_weight)
+    price_list.append(get_cost)
+    unit_cost_list.append(r_unit_cost)
+
 
 variable_frame = pandas.DataFrame(variable_dict)
 variable_frame = variable_frame.set_index('Item')
 
-print(variable_frame)
+df2 = variable_frame.sort_values(by='Price ($)', ascending=True)
+
+print()
+print("**** Item Information ****")
+print()
+print(df2)
+print()
+print("Information sorted in table from most recommended by price (top) to least recommended by price (bottom)")
 
 
 
