@@ -46,6 +46,23 @@ def num_check(question, error, num_type):
         except ValueError:
             print(error)
 
+
+
+def num_check_w(question, error, num_type):
+    valid = False
+    while not valid:
+
+        try:
+            response = num_type(input(question))
+
+            if response < 0:
+                print(error)
+            else:
+                return response
+
+        except ValueError:
+            print(error)
+
 # **** Main Routine goes here ****
 
 # set up dictionaries and lists
@@ -132,7 +149,7 @@ for item in range(0, 14):
             continue
 
     print()
-    get_weight = num_check("What is the weight or amount of your item? ", "Error please enter valid number", float)
+    get_weight = num_check_w("What is the weight or amount of your item? ", "Error please enter valid number", float)
     print()
 
     # convert g to kg
@@ -144,12 +161,15 @@ for item in range(0, 14):
     elif weight_type == "mL":
         conv_weight = get_weight / 1000 
         print("Weight = {}".format(conv_weight), "L")
+
+    elif weight_type == "L" or weight_type == "kg":
+        conv_weight = get_weight
     
     else:
      print("Weight = {}".format(get_weight), weight_type)
 
     print()
-    get_cost = num_check("How much does your item cost? $", "Please enter a number more than 0", float)
+    get_cost = num_check_w("How much does your item cost? $", "Please enter a number more than 0", float)
 
     # print("{}".format(desired_item))
     # print("{}".format(get_weight))
